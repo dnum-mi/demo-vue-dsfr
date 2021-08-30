@@ -8,6 +8,7 @@
     "lint": "eslint 'src/**/*.js'"
   },
   "dependencies": {
+    "@laruiss/vue-dsfr": "^1.0.0-beta.6",
     "vue": "^3.2.6"
   },
   "devDependencies": {
