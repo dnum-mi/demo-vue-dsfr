@@ -2,4 +2,5 @@
   <div>
     <h1>Gabarit de démarrage Vue-DSFR</h1>
   </div>
+  <router-view />
 </template>
