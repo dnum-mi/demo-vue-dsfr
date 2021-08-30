@@ -1,6 +1,29 @@
 <template>
-  <div>
-    <h1>Gabarit de démarrage Vue-DSFR</h1>
-  </div>
+  <DsfrHeader
+    :service-title="serviceTitle"
+    :service-description="serviceDescription"
+    :logo-text="logoText"
+    :quick-links="quickLinks"
+  />
   <router-view />
 </template>
+
+<script>
+export default {
+  name: 'App',
+
+  data () {
+    return {
+      serviceTitle: 'FDR',
+      serviceDescription: 'Force de développement rapide',
+      logoText: ['Ministère', 'de l’intérieur'],
+      quickLinks: [
+        {
+          path: '/mentions-legales',
+          label: 'Mentions légales',
+        },
+      ],
+    }
+  },
+}
+</script>
