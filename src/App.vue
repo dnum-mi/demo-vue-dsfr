@@ -17,10 +17,11 @@ export default {
       serviceTitle: 'FDR',
       serviceDescription: 'Force de développement rapide',
       logoText: ['Ministère', 'de l’intérieur'],
-      quickLinks: [
+      quickLinks: [
         {
           path: '/mentions-legales',
           label: 'Mentions légales',
+          icon: 'ri-file-list-2-line',
         },
       ],
     }

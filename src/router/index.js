@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
+import Legal from '../views/Legal.vue'
 
 const MAIN_TITLE = 'Gabarit de démarrage VueDsfr'
 
@@ -8,6 +9,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home,
+  },
+  {
+    path: '/mentions-legales',
+    name: 'Legal',
+    component: Legal,
   },
 ]
 

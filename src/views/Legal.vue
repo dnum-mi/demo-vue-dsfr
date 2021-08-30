@@ -1,5 +1,5 @@
 <template>
   <div class="fr-container">
-    <h2>Page d'accueil</h2>
+    <h2>Mentions légales</h2>
   </div>
 </template>
