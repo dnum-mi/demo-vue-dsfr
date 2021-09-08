@@ -13,8 +13,6 @@
 
     // Vue.js
     "johnsoncodehk.volar",
-    "octref.vetur",
-    "sdras.vue-vscode-snippets",
     "dariofuzinato.vue-peek",
 
     // CSS
