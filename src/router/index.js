@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
 import Legal from '../views/Legal.vue'
-import Login from '../views/Login.vue'
+import Login from '../views/AppLogin.vue'
 import AppDashboard from '../views/AppDashboard.vue'
 
 const MAIN_TITLE = 'Gabarit de démarrage VueDsfr'
@@ -9,8 +8,9 @@ const MAIN_TITLE = 'Gabarit de démarrage VueDsfr'
 const routes = [
   {
     path: '/',
+    alias: ['/dashboard'],
     name: 'Home',
-    component: Home,
+    component: AppDashboard,
   },
   {
     path: '/mentions-legales',
@@ -21,11 +21,6 @@ const routes = [
     path: '/connexion',
     name: 'Login',
     component: Login,
-  },
-  {
-    path: '/dashboard',
-    name: 'Dashboard',
-    component: AppDashboard,
   },
 ]
 

@@ -1,7 +1,15 @@
 html,
 body,
+#app {
+  height: 100%;
+}
+
 .h-full {
   height: 100%;
+}
+
+body {
+  background-color: #f7f7fb;
 }
 
 .min-h-full {

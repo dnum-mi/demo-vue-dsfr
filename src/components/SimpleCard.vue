@@ -23,20 +23,27 @@ export default defineComponent({
 
 <template>
   <button class="card">
-    <img
-      :src="logo"
-      :title="`Connexion avec ${text}`"
-    >
+    <span>
+      <img
+        :src="logo"
+        :title="`Connexion avec ${text}`"
+        class="logo"
+      >
+    </span>
     <span class="text  fr-text--lg">{{ text }}</span>
   </button>
 </template>
 
 <style scoped>
 .card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   border: 1px solid var(--g400);
-  background: none;
   width: 100%;
   height: 10rem;
+  background: none;
 }
 
 .text {
@@ -44,5 +51,10 @@ export default defineComponent({
   color: var(--bf500);
   max-width: 8rem;
   display: inline-block;
+}
+
+.text,
+.logo {
+  height: 4rem;
 }
 </style>

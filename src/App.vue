@@ -31,7 +31,7 @@ export default {
           icon: 'ri-question-line',
         },
         {
-          path: '/notifications',
+          path: '/profile',
           label: '',
           icon: 'ri-user-line',
         },
