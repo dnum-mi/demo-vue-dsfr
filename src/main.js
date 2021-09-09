@@ -1,5 +1,6 @@
 import '@laruiss/vue-dsfr/dist/vue-dsfr-fonts.css'
 import '@laruiss/vue-dsfr/dist/vue-dsfr.css'
+import './main.css'
 
 import { createApp } from 'vue'
 import VueDsfr from '@laruiss/vue-dsfr'

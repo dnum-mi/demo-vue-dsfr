@@ -1,9 +1,11 @@
 <template>
   <DsfrHeader
+    v-if="$route.name !== 'Login'"
     :service-title="serviceTitle"
     :service-description="serviceDescription"
     :logo-text="logoText"
     :quick-links="quickLinks"
+    show-search
   />
   <router-view />
 </template>
@@ -19,9 +21,19 @@ export default {
       logoText: ['Ministère', 'de l’intérieur'],
       quickLinks: [
         {
-          path: '/mentions-legales',
-          label: 'Mentions légales',
-          icon: 'ri-file-list-2-line',
+          path: '/notifications',
+          label: '',
+          icon: 'ri-notification-3-line',
+        },
+        {
+          path: '/aide',
+          label: '',
+          icon: 'ri-question-line',
+        },
+        {
+          path: '/notifications',
+          label: '',
+          icon: 'ri-user-line',
         },
       ],
     }

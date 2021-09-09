@@ -1,0 +1,27 @@
+html,
+body,
+.h-full {
+  height: 100%;
+}
+
+.min-h-full {
+  min-height: 100vh;
+}
+
+:root {
+  --warning: #f90;
+
+  --bg-success: #00894133;
+  --bg-error: #e1060033;
+  --bg-warning: #f903;
+  --bg-info: #0762c833;
+}
+
+.flex-w-full {
+  flex-basis: 100%;
+  flex-shrink: 0;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
