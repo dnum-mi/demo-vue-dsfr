@@ -9,7 +9,7 @@ body,
 }
 
 body {
-  background-color: #f7f7fb;
+  background-color: var(--bg-main);
 }
 
 .min-h-full {
@@ -23,6 +23,13 @@ body {
   --bg-error: #e1060033;
   --bg-warning: #f903;
   --bg-info: #0762c833;
+  --bg-main: #f7f7fb;
+}
+
+
+[data-rf-theme="dark"] {
+  --warning: #f90;
+  --bg-main: #111117;
 }
 
 .flex-w-full {

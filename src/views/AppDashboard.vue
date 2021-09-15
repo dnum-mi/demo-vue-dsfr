@@ -1,9 +1,21 @@
 <template>
   <div class="fr-container">
+    <div class="alert-container">
+      <DsfrAlert
+        :closed="!openAlert"
+        class="alert"
+        :type="alertType"
+        :title="alertTitle"
+        :description="alertDescription"
+        closeable
+        @close="closeAlert()"
+      />
+    </div>
     <div class="btn-container">
       <DsfrButton
         icon="ri-add-line"
         label="Ajouter un utilisateur"
+        @click="addUser()"
       />
     </div>
     <div class="flex  flex-wrap">
@@ -30,8 +42,12 @@
           <h3 class="graph-title">
             Utilisateurs décembre 2021
           </h3>
-          <span class="fr-display-lg">241</span>
-          <div class="graph-display" />
+          <span class="fr-display-lg">{{ usersTotal }}</span>
+          <div class="graph-display">
+            <BarGraph
+              :graph-data="graphData"
+            />
+          </div>
         </div>
         <div class="graph-select__group">
           <label>Sélectionnez un mois</label>
@@ -58,16 +74,41 @@
 
 <script>
 import { defineComponent } from 'vue'
+
 import SimpleTable from '../components/SimpleTable.vue'
+import BarGraph from '../components/BarGraph.vue'
+
+const getRandomInt = (min = 0, max = Number.MAX_SAFE_INTEGER) => Math.floor(min + Math.random() * (max + 1 - min))
+
+const getArrayOfNElement = (nb) => Array.from({ length: nb })
+
+const getRandomIntArray = (min, max, nb) =>
+  getArrayOfNElement(nb).map(() => getRandomInt(min, max))
+
+const randomIntArray = getRandomIntArray(3, 35, 13)
 
 export default defineComponent({
   name: 'AppDashboard',
+
   components: {
     SimpleTable,
+    BarGraph,
   },
 
   data () {
+    const alertType = 'success'
+    const alertTitle = 'L\'opération est un succès !'
+    const alertDescription = 'Blabla Blabla Blabla'
+    const openAlert = false
+    console.log({ openAlert })
+    const graphData = randomIntArray
     return {
+      usersTotal: graphData.reduce((acc, cur) => (acc + cur), 0),
+      graphData,
+      alertType,
+      alertTitle,
+      alertDescription,
+      openAlert,
       headers: ['Utilisateurs', 'Référence', 'Date', 'Statut'],
       rows: [
         [
@@ -91,7 +132,7 @@ export default defineComponent({
         [
           'Lebois Stéphanie',
           'DL_776366FRJZKJ_21',
-          '12/01/2022',
+          '12/01/202',
           { text: 'En attente', type: 'label', color: 'warning' },
         ],
         [
@@ -109,11 +150,20 @@ export default defineComponent({
       ],
     }
   },
+  methods: {
+    addUser () {
+      this.openAlert = true
+    },
+    closeAlert () {
+      this.openAlert = false
+    },
+  },
 })
 </script>
 
 <style scoped>
 .fr-container {
+  position: relative;
   margin-bottom: 2rem;
 }
 
@@ -175,9 +225,8 @@ export default defineComponent({
 }
 
 .graph-display {
-  height: 10rem;
+  height: 12rem;
   width: 100%;
-  background-color: white;
   margin: 1rem 0;
 }
 .graph-select__input {
@@ -188,4 +237,16 @@ export default defineComponent({
   margin-top: 0.5rem;
 }
 
+.alert-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.alert {
+  background-color: var(--w);
+  max-width: 30rem;
+}
 </style>
