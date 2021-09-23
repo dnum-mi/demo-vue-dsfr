@@ -9,7 +9,7 @@
     "lint:css": "stylelint './src/**/*.{vue,css}'"
   },
   "dependencies": {
-    "@laruiss/vue-dsfr": "^1.0.0-beta.11",
+    "@laruiss/vue-dsfr": "^1.0.0-beta.15",
     "d3": "^7.0.1",
     "oh-vue-icons": "^0.4.7",
     "vue": "^3.2.6",

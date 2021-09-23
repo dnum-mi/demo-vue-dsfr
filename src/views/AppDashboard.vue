@@ -10,15 +10,70 @@
         closeable
         @close="closeAlert()"
       />
+      <teleport to="body">
+        <DsfrModal
+          v-if="isModalOpen"
+          :opened="isModalOpen"
+          @close="isModalOpen = false"
+        >
+          <h2 class="modal-title">
+            Ajouter ou modifier un utilisateur
+          </h2>
+          <form @submit.prevent="addUser()">
+            <div class="flex  flex-wrap  items-center  justify-center  mx-auto  max-w-40">
+              <div class="flex-auto">
+                <DsfrInput
+                  type="text"
+                  label="Nom"
+                  label-visible
+                  placeholder="Dupont"
+                />
+              </div>
+              <div class="flex-auto">
+                <DsfrInput
+                  type="text"
+                  label="Prénom"
+                  label-visible
+                  placeholder="Jean"
+                />
+              </div>
+              <div class="flex-auto">
+                <DsfrInput
+                  type="text"
+                  label="Référence"
+                  label-visible
+                  placeholder="QRN"
+                />
+              </div>
+            </div>
+
+            <div class="fr-my-2v  flex  row-reverse">
+              <DsfrButton
+                type="submit"
+                label="Ajouter"
+                class="fr-m-2v"
+              />
+
+              <DsfrButton
+                type="reset"
+                label="Annuler"
+                class="fr-m-2v"
+                secondary
+                @click="isModalOpen = false"
+              />
+            </div>
+          </form>
+        </DsfrModal>
+      </teleport>
     </div>
     <div class="btn-container">
       <DsfrButton
         icon="ri-add-line"
         label="Ajouter un utilisateur"
-        @click="addUser()"
+        @click="openForm()"
       />
     </div>
-    <div class="flex  flex-wrap">
+    <div class="flex  space-between  flex-wrap">
       <div class="flex-w-full">
         <h2
           id="table-title"
@@ -30,10 +85,11 @@
       <div
         class="list"
       >
-        <SimpleTable
+        <DsfrTable
+          title="Derniers utilisateurs"
           :headers="headers"
           :rows="rows"
-          class="table"
+          class="fr-table--no-caption"
           aria-labelledby="table-title"
         />
       </div>
@@ -50,9 +106,11 @@
           </div>
         </div>
         <div class="graph-select__group">
-          <label>Sélectionnez un mois</label>
+          <label
+            for="graphSelect"
+          >Sélectionnez un mois</label>
           <select
-            id=""
+            id="graphSelect"
             name="month"
             class="graph-select__input"
           >
@@ -75,7 +133,6 @@
 <script>
 import { defineComponent } from 'vue'
 
-import SimpleTable from '../components/SimpleTable.vue'
 import BarGraph from '../components/BarGraph.vue'
 
 const getRandomInt = (min = 0, max = Number.MAX_SAFE_INTEGER) => Math.floor(min + Math.random() * (max + 1 - min))
@@ -91,16 +148,15 @@ export default defineComponent({
   name: 'AppDashboard',
 
   components: {
-    SimpleTable,
     BarGraph,
   },
 
   data () {
     const alertType = 'success'
-    const alertTitle = 'L\'opération est un succès !'
-    const alertDescription = 'Blabla Blabla Blabla'
+    const alertTitle = 'L’utilisateur a été enregistré'
+    const alertDescription = 'L’utilisateur va recevoir un email avec ses identifiants'
     const openAlert = false
-    console.log({ openAlert })
+    const isModalOpen = false
     const graphData = randomIntArray
     return {
       usersTotal: graphData.reduce((acc, cur) => (acc + cur), 0),
@@ -109,50 +165,72 @@ export default defineComponent({
       alertTitle,
       alertDescription,
       openAlert,
+      isModalOpen,
+      // actions: [
+      //   {
+      //     label: 'Valider',
+      //     onClick: () => {
+      //       this.openAlert = true
+      //       setTimeout(
+      //         close,
+      //         2000,
+      //       )
+      //     },
+      //   },
+      //   {
+      //     label: 'Annuler',
+      //     secondary: true,
+      //     onClick: () => { this.isModalOpen = false },
+      //   },
+      // ],
       headers: ['Utilisateurs', 'Référence', 'Date', 'Statut'],
       rows: [
         [
           'Dulac Nathalie',
           'DL_776366FRJZKJ_21',
           '12/01/2022',
-          { text: 'En cours', type: 'label', color: 'info' },
+          { label: 'En cours', component: 'DsfrTag', class: 'info' },
         ],
         [
           'Legrand Jacques',
           'DL_776366FRJZKJ_21',
           '09/03/2022',
-          { text: 'Erreur', type: 'label', color: 'error' },
+          { label: 'Erreur', component: 'DsfrTag', class: 'error' },
         ],
         [
           'Laforêt Caroline',
           'DL_776366FRJZKJ_21',
           '12/01/2022',
-          { text: 'Validé', type: 'label', color: 'success' },
+          { label: 'Validé', component: 'DsfrTag', class: 'success' },
         ],
         [
           'Lebois Stéphanie',
           'DL_776366FRJZKJ_21',
           '12/01/202',
-          { text: 'En attente', type: 'label', color: 'warning' },
+          { label: 'En attente', component: 'DsfrTag', class: 'warning' },
         ],
         [
           'Legrand Jacques',
           'DL_776366FRJZKJ_21',
           '12/01/2022',
-          { text: 'Validé', type: 'label', color: 'success' },
+          { label: 'Validé', component: 'DsfrTag', class: 'success' },
         ],
         [
           'Goliath David',
           'DL_776366FRJZKJ_21',
           '12/01/2022',
-          { text: 'En cours', type: 'label', color: 'info' },
+          { label: 'En cours', component: 'DsfrTag', class: 'info' },
         ],
       ],
     }
   },
   methods: {
+    openForm () {
+      this.isModalOpen = true
+    },
     addUser () {
       this.openAlert = true
+      this.isModalOpen = false
     },
     closeAlert () {
       this.openAlert = false
@@ -167,6 +245,39 @@ export default defineComponent({
   margin-bottom: 2rem;
 }
 
+.max-w-40 {
+  max-width: 22rem;
+}
+
+.mx-auto {
+  margin-inline: auto;
+}
+
+.flex-auto {
+  flex-basis: 51%;
+  flex-grow: 1;
+}
+
+:deep(.flex-auto .fr-input) {
+  width: 100%;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+:deep(.fr-table table) {
+  display: table;
+}
+
 .btn-container {
   display: flex;
   justify-content: flex-end;
@@ -174,8 +285,12 @@ export default defineComponent({
   text-align: right;
 }
 
-.flex {
+.space-between {
   justify-content: space-between;
+}
+
+.row-reverse {
+  flex-direction: row-reverse;
 }
 
 .list {
@@ -183,8 +298,8 @@ export default defineComponent({
   flex-grow: 1;
   flex-shrink: 0;
   margin-right: 1rem;
-  box-shadow: 0 3px 20px 0 rgba(0, 0, 109, 0.1);
   background-color: #f7f7fb;
+  box-shadow: 0 3px 20px 0 rgba(0, 0, 109, 0.1);
 }
 
 .table {
@@ -192,25 +307,30 @@ export default defineComponent({
 }
 
 .table-title {
-  font-weight: 400;
-  font-size: 1.75rem;
-  text-align: left;
   margin-bottom: 1rem;
+  font-size: 1.75rem;
+  font-weight: 400;
+  text-align: left;
 }
 
 .user-graph {
   display: flex;
-  flex-direction: column;
   flex-basis: 20%;
+  flex-direction: column;
   flex-grow: 1;
   flex-shrink: 1;
-  background-color: rgba(0,17,139, 0.7);
-  margin: 0 0 0 1rem;
+  justify-content: space-between;
   padding: 1.5rem;
+  margin: 0 0 0 1rem;
+  background-color: rgba(0, 17, 139, 0.7);
   color: white;
   font-size: 1rem;
   font-weight: bold;
-  justify-content: space-between;
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .fr-display-lg {
@@ -218,35 +338,36 @@ export default defineComponent({
 }
 
 .graph-title {
+  margin: 0;
   color: white;
   font-size: 1rem;
   line-height: 1rem;
-  margin: 0;
 }
 
 .graph-display {
-  height: 12rem;
   width: 100%;
+  height: 12rem;
   margin: 1rem 0;
 }
+
 .graph-select__input {
-  border-radius: 5px;
-  height: 2rem;
   width: 100%;
-  background-color: white;
+  height: 2rem;
   margin-top: 0.5rem;
+  background-color: white;
+  border-radius: 5px;
 }
 
 .alert-container {
   position: absolute;
-  left: 0;
   right: 0;
+  left: 0;
   display: flex;
   justify-content: center;
 }
 
 .alert {
-  background-color: var(--w);
   max-width: 30rem;
+  background-color: var(--w);
 }
 </style>
