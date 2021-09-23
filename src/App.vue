@@ -22,18 +22,21 @@ export default {
       quickLinks: [
         {
           path: '/notifications',
-          label: '',
+          label: 'notifications',
           icon: 'ri-notification-3-line',
+          iconOnly: true,
         },
         {
           path: '/aide',
-          label: '',
+          label: 'aide',
           icon: 'ri-question-line',
+          iconOnly: true,
         },
         {
-          path: '/profile',
-          label: '',
+          path: '/profil',
+          label: 'profil',
           icon: 'ri-user-line',
+          iconOnly: true,
         },
       ],
     }
