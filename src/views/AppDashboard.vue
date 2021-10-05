@@ -66,6 +66,7 @@
         </DsfrModal>
       </teleport>
     </div>
+    <Notifications></Notifications>
     <div class="btn-container">
       <DsfrButton
         icon="ri-add-line"
@@ -134,6 +135,7 @@
 import { defineComponent } from 'vue'
 
 import BarGraph from '../components/BarGraph.vue'
+import Notifications from '../components/Notifications.vue'
 
 const getRandomInt = (min = 0, max = Number.MAX_SAFE_INTEGER) => Math.floor(min + Math.random() * (max + 1 - min))
 
@@ -149,6 +151,7 @@ export default defineComponent({
 
   components: {
     BarGraph,
+    Notifications,
   },
 
   data () {
