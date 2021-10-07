@@ -93,62 +93,20 @@
           aria-labelledby="table-title"
         />
       </div>
-      <div class="user-graph">
-        <div>
-          <h3 class="graph-title">
-            Utilisateurs décembre 2021
-          </h3>
-          <span class="fr-display-lg">{{ usersTotal }}</span>
-          <div class="graph-display">
-            <BarGraph
-              :graph-data="graphData"
-            />
-          </div>
-        </div>
-        <div class="graph-select__group">
-          <label
-            for="graphSelect"
-          >Sélectionnez un mois</label>
-          <select
-            id="graphSelect"
-            name="month"
-            class="graph-select__input"
-          >
-            <option value="2021-12">
-              Décembre 2021
-            </option>
-            <option value="2021-11">
-              Novembre 2021
-            </option>
-            <option value="2021-10">
-              Octobre 2021
-            </option>
-          </select>
-        </div>
-      </div>
+      <UserGraph />
     </div>
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-
-import BarGraph from '../components/BarGraph.vue'
-
-const getRandomInt = (min = 0, max = Number.MAX_SAFE_INTEGER) => Math.floor(min + Math.random() * (max + 1 - min))
-
-const getArrayOfNElement = (nb) => Array.from({ length: nb })
-
-const getRandomIntArray = (min, max, nb) =>
-  getArrayOfNElement(nb).map(() => getRandomInt(min, max))
-
-const randomIntArray = getRandomIntArray(3, 35, 13)
+import UserGraph from '../components/UserGraph.vue'
 
 export default defineComponent({
   name: 'AppDashboard',
 
   components: {
-    BarGraph,
+    UserGraph,
   },
 
   data () {
@@ -157,32 +115,13 @@ export default defineComponent({
     const alertDescription = 'L’utilisateur va recevoir un email avec ses identifiants'
     const openAlert = false
     const isModalOpen = false
-    const graphData = randomIntArray
+
     return {
-      usersTotal: graphData.reduce((acc, cur) => (acc + cur), 0),
-      graphData,
       alertType,
       alertTitle,
       alertDescription,
       openAlert,
       isModalOpen,
-      // actions: [
-      //   {
-      //     label: 'Valider',
-      //     onClick: () => {
-      //       this.openAlert = true
-      //       setTimeout(
-      //         close,
-      //         2000,
-      //       )
-      //     },
-      //   },
-      //   {
-      //     label: 'Annuler',
-      //     secondary: true,
-      //     onClick: () => { this.isModalOpen = false },
-      //   },
-      // ],
       headers: ['Utilisateurs', 'Référence', 'Date', 'Statut'],
       rows: [
         [
@@ -224,6 +163,7 @@ export default defineComponent({
       ],
     }
   },
+
   methods: {
     openForm () {
       this.isModalOpen = true
@@ -293,6 +233,11 @@ export default defineComponent({
   flex-direction: row-reverse;
 }
 
+.btn-container > .fr-btn {
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+}
+
 .list {
   flex-basis: 60%;
   flex-grow: 1;
@@ -313,49 +258,13 @@ export default defineComponent({
   text-align: left;
 }
 
-.user-graph {
-  display: flex;
-  flex-basis: 20%;
-  flex-direction: column;
-  flex-grow: 1;
-  flex-shrink: 1;
-  justify-content: space-between;
-  padding: 1.5rem;
-  margin: 0 0 0 1rem;
-  background-color: rgba(0, 17, 139, 0.7);
-  color: white;
-  font-size: 1rem;
+:deep(.fr-table td:first-child) {
   font-weight: bold;
 }
 
 .modal-title {
   font-size: 1.5rem;
   line-height: 2rem;
-}
-
-.fr-display-lg {
-  font-size: 4rem;
-}
-
-.graph-title {
-  margin: 0;
-  color: white;
-  font-size: 1rem;
-  line-height: 1rem;
-}
-
-.graph-display {
-  width: 100%;
-  height: 12rem;
-  margin: 1rem 0;
-}
-
-.graph-select__input {
-  width: 100%;
-  height: 2rem;
-  margin-top: 0.5rem;
-  background-color: white;
-  border-radius: 5px;
 }
 
 .alert-container {

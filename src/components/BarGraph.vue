@@ -1,14 +1,20 @@
 <template>
   <div class="h-full">
-    <div class="container-chart text-align-left">
-      <div class="chart" />
+    <div class="container-chart  text-align-left">
+      <div
+        ref="chart"
+        class="chart"
+      />
     </div>
   </div>
 </template>
+
 <script>
 import * as d3 from 'd3'
+
 export default {
   name: 'BarGraph',
+
   props: {
     graphData: {
       type: Array,
@@ -20,41 +26,51 @@ export default {
     return {}
   },
 
+  watch: {
+    graphData () {
+      this.createGraph()
+    },
+  },
+
   mounted () {
-    d3.select('.chart')
-      .selectAll('div')
-      .data(this.graphData)
-      .enter().append('div')
-      .style('height', function (nb) { return nb * 5 + 'px' })
-      .text(function (nb) { return nb })
+    this.createGraph()
+  },
+
+  methods: {
+    createGraph () {
+      this.$refs.chart.innerHTML = ''
+      d3.select(this.$refs.chart)
+        .selectAll('div')
+        .data(this.graphData)
+        .enter().append('div')
+        .style('height', function (nb) { return nb * 5 + 'px' })
+        .text(function (nb) { return nb })
+    },
   },
 }
 </script>
 
 <style scoped>
-</style>
-
-<style>
 .chart {
   display: flex;
-  align-items: flex-end;
   height: 100%;
+  align-items: flex-end;
 }
-.chart div {
-  font: 10px sans-serif;
-  background-color: var(--w);
-  text-align: center;
+.chart :deep(div) {
+  width: 20px;
   padding: 3px;
   margin: 1px;
+  background-color: var(--w);
   color: var(--bf500);
-  width: 20px;
+  font: 10px sans-serif;
+  text-align: center;
 }
 
 .container-chart {
   max-width: 300px;
   height: 100%;
-  margin: auto;
-  border: 1px solid var(--w);
   padding: 0.5rem;
+  border: 1px solid var(--w);
+  margin: auto;
 }
 </style>
