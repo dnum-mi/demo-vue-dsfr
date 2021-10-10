@@ -7,12 +7,28 @@
     :quick-links="quickLinks"
     show-search
   />
+  <Popper>
+    <button>Notifications</button>
+    <template #content>
+      <Notifications
+        :notif-tab="notifTab"
+      />
+    </template>
+  </Popper>
   <router-view />
 </template>
 
 <script>
+import Popper from 'vue3-popper'
+import Notifications from './components/Notifications.vue'
+
 export default {
   name: 'App',
+
+  components: {
+    Popper,
+    Notifications,
+  },
 
   data () {
     return {
@@ -21,7 +37,7 @@ export default {
       logoText: ['Ministère', 'de l’intérieur'],
       quickLinks: [
         {
-          path: '/notifications',
+          path: '#',
           label: 'notifications',
           icon: 'ri-notification-3-line',
           iconOnly: true,

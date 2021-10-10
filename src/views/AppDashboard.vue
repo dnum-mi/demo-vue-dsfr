@@ -66,7 +66,9 @@
         </DsfrModal>
       </teleport>
     </div>
-    <Notifications></Notifications>
+    <Notifications
+      :notif-tab="notifTab"
+    />
     <div class="btn-container">
       <DsfrButton
         icon="ri-add-line"
@@ -224,6 +226,35 @@ export default defineComponent({
           '12/01/2022',
           { label: 'En cours', component: 'DsfrTag', class: 'info' },
         ],
+      ],
+      notifTab: [
+        {
+          icon: 'ri-error-warning-line',
+          iconOnly: true,
+          class: 'success',
+          label: 'Erreur sur Jacques Legrand',
+          subDesc: 'Le 17 décembre 2021 à 10:21',
+          statut: 'Validé',
+          idNotif: 1,
+        },
+        {
+          icon: 'ri-mail-line',
+          iconOnly: true,
+          class: 'warning',
+          label: 'Mail de Jacques Lepetit',
+          subDesc: 'Le 18 décembre 2021 à 10:21',
+          statut: 'En cours',
+          idNotif: 2,
+        },
+        {
+          icon: 'ri-error-warning-line',
+          iconOnly: true,
+          class: 'error',
+          label: 'Erreur sur Jacques Lemoyen',
+          subDesc: 'Le 19 décembre 2021 à 10:21',
+          statut: 'Refusé',
+          idNotif: 3,
+        },
       ],
     }
   },
