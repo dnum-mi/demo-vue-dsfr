@@ -117,6 +117,6 @@ export default defineComponent({
   z-index: 2;
   width: 30rem;
   padding: 1rem;
-  background-color: #ffffff;
+  background-color: #fff;
 }
 </style>
