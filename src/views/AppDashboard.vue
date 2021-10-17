@@ -66,9 +66,31 @@
         </DsfrModal>
       </teleport>
     </div>
-    <Notifications
-      :notif-tab="notifTab"
-    />
+    <teleport to=".fr-links-group > li:first-child">
+      <div
+        v-show="showNotifications"
+        ref="arrowUp"
+        class="arrow-up"
+        :style="{
+          top: `calc(${arrowTop}px + 1rem)`,
+          left: arrowLeft + 'px',
+        }"
+      />
+      <div
+        ref="notifContainer"
+        class="notifications-container"
+        :class="{ hidden: !showNotifications }"
+        :style="{
+          top: notifTop + 'px',
+          left: notifLeft + 'px'
+        }"
+      >
+        <Notifications
+          :show="showNotifications"
+          :notifications="notifications"
+        />
+      </div>
+    </teleport>
     <div class="btn-container">
       <DsfrButton
         icon="ri-add-line"
@@ -91,7 +113,7 @@
         <DsfrTable
           title="Derniers utilisateurs"
           :headers="headers"
-          :rows="rows"
+          :rows="users"
           class="fr-table--no-caption"
           aria-labelledby="table-title"
         />
@@ -148,6 +170,34 @@ const getRandomIntArray = (min, max, nb) =>
 
 const randomIntArray = getRandomIntArray(3, 35, 13)
 
+const dictNotifStatus = {
+  enabled: 'Validé',
+  disabled: 'Refusé',
+  pending: 'En cours',
+}
+const dictNotifClass = {
+  enabled: 'success',
+  disabled: 'error',
+  pending: 'warning',
+}
+const dictNotifIcon = {
+  mail: 'ri-mail-line',
+  warning: 'ri-error-warning-line',
+}
+
+const dictUserClass = {
+  disabled: 'error',
+  pending: 'info',
+  waiting: 'warning',
+  enabled: 'success',
+}
+const dictUserLabel = {
+  disabled: 'Erreur',
+  pending: 'En cours',
+  waiting: 'En attente',
+  enabled: 'Validé',
+}
+
 export default defineComponent({
   name: 'AppDashboard',
 
@@ -165,6 +215,11 @@ export default defineComponent({
     const graphData = randomIntArray
     return {
       usersTotal: graphData.reduce((acc, cur) => (acc + cur), 0),
+      notifLeft: 0,
+      notifTop: 0,
+      arrowCenter: 0,
+      arrowLeft: 0,
+      arrowTop: 0,
       graphData,
       alertType,
       alertTitle,
@@ -189,7 +244,30 @@ export default defineComponent({
       //   },
       // ],
       headers: ['Utilisateurs', 'Référence', 'Date', 'Statut'],
-      rows: [
+    }
+  },
+
+  computed: {
+    showNotifications () {
+      return this.$store.state.showNotifications
+    },
+    notifications () {
+      return this.$store.state.notifications.map(
+        (notification) => {
+          const { type, label, subDesc, status } = notification
+          return {
+            label,
+            subDesc,
+            icon: dictNotifIcon[type],
+            iconOnly: true,
+            class: dictNotifClass[status],
+            statut: dictNotifStatus[status],
+          }
+        })
+    },
+    users () {
+      /*
+      [
         [
           'Dulac Nathalie',
           'DL_776366FRJZKJ_21',
@@ -227,37 +305,39 @@ export default defineComponent({
           { label: 'En cours', component: 'DsfrTag', class: 'info' },
         ],
       ],
-      notifTab: [
-        {
-          icon: 'ri-error-warning-line',
-          iconOnly: true,
-          class: 'success',
-          label: 'Erreur sur Jacques Legrand',
-          subDesc: 'Le 17 décembre 2021 à 10:21',
-          statut: 'Validé',
-          idNotif: 1,
-        },
-        {
-          icon: 'ri-mail-line',
-          iconOnly: true,
-          class: 'warning',
-          label: 'Mail de Jacques Lepetit',
-          subDesc: 'Le 18 décembre 2021 à 10:21',
-          statut: 'En cours',
-          idNotif: 2,
-        },
-        {
-          icon: 'ri-error-warning-line',
-          iconOnly: true,
-          class: 'error',
-          label: 'Erreur sur Jacques Lemoyen',
-          subDesc: 'Le 19 décembre 2021 à 10:21',
-          statut: 'Refusé',
-          idNotif: 3,
-        },
-      ],
-    }
+      */
+      return this.$store.state.users.map(
+        (user) => {
+          const { fullname, reference, date, status } = user
+          return [
+            fullname,
+            reference,
+            date,
+            {
+              label: dictUserLabel[status],
+              component: 'DsfrTag',
+              class: dictUserClass[status],
+            },
+          ]
+        })
+    },
   },
+
+  watch: {
+    async showNotifications (newVal) {
+      if (newVal) {
+        await this.$nextTick()
+        this.placeNotifContainer()
+      }
+    },
+  },
+
+  mounted () {
+    window.addEventListener('resize', () => this.placeNotifContainer())
+    this.fetchNotifications()
+    this.fetchUsers()
+  },
+
   methods: {
     openForm () {
       this.isModalOpen = true
@@ -269,6 +349,26 @@ export default defineComponent({
     closeAlert () {
       this.openAlert = false
     },
+    placeNotifContainer () {
+      const header = document.querySelector('.fr-header')
+      const headerHeight = header.offsetHeight
+      const notificationIcon = document.querySelector('.fr-links-group > li:first-child')
+      const notifOffsetWidth = this.$refs.notifContainer.offsetWidth
+      this.arrowCenter = notificationIcon.offsetLeft + (notificationIcon.offsetWidth / 2)
+      this.arrowLeft = this.arrowCenter - (this.$refs.arrowUp.offsetWidth / 2)
+      this.notifLeft = this.arrowCenter - (notifOffsetWidth / 2)
+      this.notifTop = headerHeight
+      this.arrowTop = this.notifTop - 10
+      if ((this.notifLeft + notifOffsetWidth + 2 * 10) > window.innerWidth) {
+        this.notifLeft = this.notifLeft - (window.innerWidth - (this.notifLeft + notifOffsetWidth)) - 16
+      }
+    },
+    fetchNotifications () {
+      this.$store.dispatch('fetchNotifications')
+    },
+    fetchUsers () {
+      this.$store.dispatch('fetchUsers')
+    },
   },
 })
 </script>
@@ -277,6 +377,34 @@ export default defineComponent({
 .fr-container {
   position: relative;
   margin-bottom: 2rem;
+}
+
+.notifications-container {
+  position: absolute;
+  z-index: 2;
+  /* right: 1rem; */
+  width: 30rem;
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-right: 0;
+  margin-left: 0;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 12px;
+  text-align: left;
+}
+
+.arrow-up {
+  position: absolute;
+  z-index: 3;
+  width: 0px;
+  height: 0px;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #fff;
+  border-left: 10px solid transparent;
+}
+
+.notifications-container.hidden {
+  display: none;
 }
 
 .max-w-40 {

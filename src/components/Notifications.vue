@@ -20,10 +20,11 @@ export default defineComponent({
   },
 
   props: {
-    notifTab: {
+    notifications: {
       type: Array,
       default: () => [],
     },
+    show: Boolean,
   },
 
   data () {
@@ -61,10 +62,10 @@ export default defineComponent({
     },
     notifsArray () {
       return [
-        this.notifTab,
-        this.notifTab.filter(notif => notif.statut === 'Validé'),
-        this.notifTab.filter(notif => notif.statut === 'En cours'),
-        this.notifTab.filter(notif => notif.statut === 'Refusé'),
+        this.notifications,
+        this.notifications.filter(notif => notif.statut === 'Validé'),
+        this.notifications.filter(notif => notif.statut === 'En cours'),
+        this.notifications.filter(notif => notif.statut === 'Refusé'),
       ]
     },
   },
@@ -79,44 +80,42 @@ export default defineComponent({
 </script>
 
 <template>
-  <teleport to=".fr-links-group > li:first-child">
-    <div class="notifications-container">
-      <h6>
-        Centre
-        de
-        notifications
-      </h6>
-      <DsfrTabs
-        tab-list-name="Centre de notifications"
-        :tab-titles="tabTitles"
-        @select-tab="selectTab($event)"
+  <div
+    v-show="show"
+  >
+    <h6>
+      Centre
+      de
+      notifications
+    </h6>
+    <DsfrTabs
+      tab-list-name="Centre de notifications"
+      :tab-titles="tabTitles"
+      @select-tab="selectTab($event)"
+    >
+      <DsfrTabContent
+        v-for="(tabTitle, idx) in tabTitles"
+        :key="idx"
+        class="fr-p-0"
+        :panel-id="tabTitle.panelId"
+        :tab-id="tabTitle.tabId"
+        :selected="selectedTabIndex === idx"
+        :asc="asc"
       >
-        <DsfrTabContent
-          v-for="(tabTitle, idx) in tabTitles"
-          :key="idx"
-          class="fr-p-0"
-          :panel-id="tabTitle.panelId"
-          :tab-id="tabTitle.tabId"
-          :selected="selectedTabIndex === idx"
-          :asc="asc"
-        >
-          <Notification
-            v-for="(notif, index) in notifsArray[idx]"
-            :key="index"
-            v-bind="notif"
-          />
-        </DsfrTabContent>
-      </DsfrTabs>
-    </div>
-  </teleport>
+        <Notification
+          v-for="(notif, index) in notifsArray[idx]"
+          :key="index"
+          v-bind="notif"
+        />
+      </DsfrTabContent>
+    </DsfrTabs>
+  </div>
 </template>
 
 <style scoped>
-.notifications-container {
+.anchor {
   position: absolute;
-  z-index: 2;
-  width: 30rem;
-  padding: 1rem;
-  background-color: #fff;
+  width: 1px;
+  height: 1px;
 }
 </style>

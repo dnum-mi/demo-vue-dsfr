@@ -27,6 +27,10 @@ export default {
           label: 'notifications',
           icon: 'ri-notification-3-line',
           iconOnly: true,
+          onClick: ($event) => {
+            $event.preventDefault()
+            this.toggleNotifications()
+          },
         },
         {
           path: '/aide',
@@ -42,6 +46,12 @@ export default {
         },
       ],
     }
+  },
+
+  methods: {
+    toggleNotifications () {
+      this.$store.dispatch('toggleNotifications')
+    },
   },
 }
 </script>
