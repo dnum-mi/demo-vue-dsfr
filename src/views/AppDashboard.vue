@@ -261,7 +261,7 @@ export default defineComponent({
             icon: dictNotifIcon[type],
             iconOnly: true,
             class: dictNotifClass[status],
-            statut: dictNotifStatus[status],
+            status: dictNotifStatus[status],
           }
         })
     },
