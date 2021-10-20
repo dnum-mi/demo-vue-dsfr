@@ -1,0 +1,64 @@
+{
+  "notifications": [
+    {
+      "id": 1,
+      "type": "warning",
+      "label": "Accès de Jacques Legrand",
+      "subDesc": "Le 17 décembre 2021 à 10:21",
+      "status": "enabled"
+    },
+    {
+      "id": 2,
+      "type": "mail",
+      "label": "Mail de Jacques Lepetit",
+      "subDesc": "Le 18 décembre 2021 à 10:21",
+      "status": "pending"
+    },
+    {
+      "id": 3,
+      "type": "warning",
+      "label": "Erreur sur Jacques Lemoyen",
+      "subDesc": "Le 19 décembre 2021 à 10:21",
+      "status": "disabled"
+    }
+  ],
+  "users": [
+    {
+      "fullname": "Dulac Nathalie",
+      "reference": "DL_776366FRJZKJ_21",
+      "date": "12/01/2022",
+      "status": "pending"
+    },
+    {
+      "fullname": "Legrand Jacques",
+      "reference": "DL_776366FRJZKJ_21",
+      "date": "09/03/2022",
+      "status": "disabled"
+    },
+    {
+      "fullname": "Laforêt Caroline",
+      "reference": "DL_776366FRJZKJ_21",
+      "date": "12/01/2022",
+      "status": "enabled"
+    },
+    {
+      "fullname": "Lebois Stéphanie",
+      "reference": "DL_776366FRJZKJ_21",
+      "date": "12/01/202",
+      "status": "waiting"
+    },
+    {
+      "fullname": "Legrand Jacques",
+      "reference": "DL_776366FRJZKJ_21",
+      "date": "12/01/2022",
+      "status": "enabled"
+    },
+    {
+      "fullname": "Goliath David",
+      "reference": "DL_776366FRJZKJ_21",
+      "date": "12/01/2022",
+      "status": "pending"
+    }
+  ]
+}
+
