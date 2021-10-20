@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import apiClient from '../api/index.js'
 
 export default createStore({
   state: {
@@ -23,7 +24,7 @@ export default createStore({
     },
     async fetchNotifications ({ commit }) {
       try {
-        const notifications = await fetch('http://localhost:3004/notifications').then(response => response.json())
+        const notifications = await apiClient.getNotifications()
         commit('setNotifications', notifications)
       } catch (error) {
         // Display error to user
@@ -31,7 +32,7 @@ export default createStore({
     },
     async fetchUsers ({ commit }) {
       try {
-        const users = await fetch('http://localhost:3004/users').then(response => response.json())
+        const users = await apiClient.getUsers()
         commit('setUsers', users)
       } catch (error) {
         // Display error to user

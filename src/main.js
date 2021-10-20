@@ -2,7 +2,6 @@ import '@laruiss/vue-dsfr/dist/vue-dsfr-fonts.css'
 import '@laruiss/vue-dsfr/dist/vue-dsfr.css'
 
 import { createApp } from 'vue'
-// import Popper from 'vue3-popper'
 import VueDsfr from '@laruiss/vue-dsfr'
 
 import App from './App.vue'
@@ -16,5 +15,4 @@ createApp(App)
   .use(store)
   .use(router)
   .use(VueDsfr)
-  // .component('VuePopper', Popper)
   .mount('#app')
