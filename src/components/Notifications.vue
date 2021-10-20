@@ -63,9 +63,9 @@ export default defineComponent({
     notifsArray () {
       return [
         this.notifications,
-        this.notifications.filter(notif => notif.statut === 'Validé'),
-        this.notifications.filter(notif => notif.statut === 'En cours'),
-        this.notifications.filter(notif => notif.statut === 'Refusé'),
+        this.notifications.filter(notif => notif.status === 'Validé'),
+        this.notifications.filter(notif => notif.status === 'En cours'),
+        this.notifications.filter(notif => notif.status === 'Refusé'),
       ]
     },
   },

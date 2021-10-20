@@ -226,23 +226,6 @@ export default defineComponent({
       alertDescription,
       openAlert,
       isModalOpen,
-      // actions: [
-      //   {
-      //     label: 'Valider',
-      //     onClick: () => {
-      //       this.openAlert = true
-      //       setTimeout(
-      //         close,
-      //         2000,
-      //       )
-      //     },
-      //   },
-      //   {
-      //     label: 'Annuler',
-      //     secondary: true,
-      //     onClick: () => { this.isModalOpen = false },
-      //   },
-      // ],
       headers: ['Utilisateurs', 'Référence', 'Date', 'Statut'],
     }
   },
@@ -261,51 +244,11 @@ export default defineComponent({
             icon: dictNotifIcon[type],
             iconOnly: true,
             class: dictNotifClass[status],
-            statut: dictNotifStatus[status],
+            status: dictNotifStatus[status],
           }
         })
     },
     users () {
-      /*
-      [
-        [
-          'Dulac Nathalie',
-          'DL_776366FRJZKJ_21',
-          '12/01/2022',
-          { label: 'En cours', component: 'DsfrTag', class: 'info' },
-        ],
-        [
-          'Legrand Jacques',
-          'DL_776366FRJZKJ_21',
-          '09/03/2022',
-          { label: 'Erreur', component: 'DsfrTag', class: 'error' },
-        ],
-        [
-          'Laforêt Caroline',
-          'DL_776366FRJZKJ_21',
-          '12/01/2022',
-          { label: 'Validé', component: 'DsfrTag', class: 'success' },
-        ],
-        [
-          'Lebois Stéphanie',
-          'DL_776366FRJZKJ_21',
-          '12/01/202',
-          { label: 'En attente', component: 'DsfrTag', class: 'warning' },
-        ],
-        [
-          'Legrand Jacques',
-          'DL_776366FRJZKJ_21',
-          '12/01/2022',
-          { label: 'Validé', component: 'DsfrTag', class: 'success' },
-        ],
-        [
-          'Goliath David',
-          'DL_776366FRJZKJ_21',
-          '12/01/2022',
-          { label: 'En cours', component: 'DsfrTag', class: 'info' },
-        ],
-      ],
-      */
       return this.$store.state.users.map(
         (user) => {
           const { fullname, reference, date, status } = user

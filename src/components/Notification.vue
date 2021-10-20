@@ -21,8 +21,8 @@ export default defineComponent({
   },
 
   methods: {
-    onClick () {
-      alert('click')
+    openNotif () {
+      alert('Ouverture de la notification ' + this.label)
     },
   },
 })
@@ -36,6 +36,7 @@ export default defineComponent({
         :icon="icon"
         :icon-only="iconOnly"
         :class="$attrs.class"
+        @click="openNotif"
       />
     </div>
     <div>
