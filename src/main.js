@@ -6,11 +6,13 @@ import VueDsfr from '@laruiss/vue-dsfr'
 
 import App from './App.vue'
 import router from './router/index.js'
+import store from './store/index.js'
 import './icons.js'
 
 import './main.css'
 
 createApp(App)
+  .use(store)
   .use(router)
   .use(VueDsfr)
   .mount('#app')

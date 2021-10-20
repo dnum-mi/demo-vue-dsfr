@@ -14,6 +14,8 @@
 export default {
   name: 'App',
 
+  components: {},
+
   data () {
     return {
       serviceTitle: 'FDR',
@@ -21,10 +23,14 @@ export default {
       logoText: ['Ministère', 'de l’intérieur'],
       quickLinks: [
         {
-          path: '/notifications',
+          path: '#',
           label: 'notifications',
           icon: 'ri-notification-3-line',
           iconOnly: true,
+          onClick: ($event) => {
+            $event.preventDefault()
+            this.toggleNotifications()
+          },
         },
         {
           path: '/aide',
@@ -40,6 +46,12 @@ export default {
         },
       ],
     }
+  },
+
+  methods: {
+    toggleNotifications () {
+      this.$store.dispatch('toggleNotifications')
+    },
   },
 }
 </script>

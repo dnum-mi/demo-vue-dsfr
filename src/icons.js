@@ -1,7 +1,8 @@
-import VIcon from 'oh-vue-icons/dist/v3/icon.es.js'
+import { VIcon } from '@laruiss/vue-dsfr'
 
 import {
   RiAddLine,
+  RiChatCheckLine,
   RiFileList2Line,
   RiMenuLine,
   RiNotification3Line,
@@ -11,6 +12,7 @@ import {
 
 VIcon.add(
   RiAddLine,
+  RiChatCheckLine,
   RiFileList2Line,
   RiMenuLine,
   RiNotification3Line,
