@@ -4,12 +4,16 @@ import apiClient from '../api/index.js'
 export default createStore({
   state: {
     showNotifications: false,
+    showProfile: false,
     notifications: [],
     users: [],
   },
   mutations: {
     toggleNotifications (state) {
       state.showNotifications = !state.showNotifications
+    },
+    toggleProfile (state) {
+      state.showProfile = !state.showProfile
     },
     setNotifications (state, notifications) {
       state.notifications = notifications
@@ -21,6 +25,9 @@ export default createStore({
   actions: {
     toggleNotifications ({ commit }) {
       commit('toggleNotifications')
+    },
+    toggleProfile ({ commit }) {
+      commit('toggleProfile')
     },
     async fetchNotifications ({ commit }) {
       try {

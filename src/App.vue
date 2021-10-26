@@ -23,7 +23,7 @@ export default {
       logoText: ['Ministère', 'de l’intérieur'],
       quickLinks: [
         {
-          path: '/notifications',
+          path: '#',
           label: 'notifications',
           icon: 'ri-notification-3-line',
           iconOnly: true,
@@ -39,7 +39,7 @@ export default {
           iconOnly: true,
         },
         {
-          path: '/profil',
+          path: '#',
           label: 'profil',
           icon: 'ri-user-line',
           iconOnly: true,

@@ -91,6 +91,30 @@
         />
       </div>
     </teleport>
+    <teleport to=".fr-links-group > li:nth-child(0n+3)">
+      <div
+        v-show="showProfile"
+        ref="arrowUp"
+        class="arrow-up"
+        :style="{
+          top: `calc(${arrowTop}px + 1rem)`,
+          left: arrowLeft + 'px',
+        }"
+      />
+      <div
+        ref="profileContainer"
+        class="profile-card-container"
+        :class="{ hidden: !showProfile }"
+        :style="{
+          top: notifTop + 'px',
+          left: notifLeft + 'px'
+        }"
+      >
+        <ProfileCard
+          :show="showProfile"
+        />
+      </div>
+    </teleport>
     <div class="btn-container">
       <DsfrButton
         icon="ri-add-line"
@@ -160,6 +184,7 @@ import { defineComponent } from 'vue'
 
 import BarGraph from '../components/BarGraph.vue'
 import Notifications from '../components/Notifications.vue'
+import ProfileCard from '../components/ProfileCard.vue'
 
 const getRandomInt = (min = 0, max = Number.MAX_SAFE_INTEGER) => Math.floor(min + Math.random() * (max + 1 - min))
 
@@ -204,6 +229,7 @@ export default defineComponent({
   components: {
     BarGraph,
     Notifications,
+    ProfileCard,
   },
 
   data () {
@@ -233,6 +259,9 @@ export default defineComponent({
   computed: {
     showNotifications () {
       return this.$store.state.showNotifications
+    },
+    showProfile () {
+      return this.$store.state.showProfile
     },
     notifications () {
       return this.$store.state.notifications.map(
