@@ -5,6 +5,7 @@ export default createStore({
   state: {
     showNotifications: false,
     showProfile: false,
+    loggedIn: false,
     notifications: [],
     users: [],
     profile: {},
@@ -19,11 +20,17 @@ export default createStore({
     setProfile (state, profile) {
       state.profile = profile
     },
+    disconnectUser (state) {
+      state.profile = undefined
+    },
     setNotifications (state, notifications) {
       state.notifications = notifications
     },
     setUsers (state, users) {
       state.users = users
+    },
+    connectUser (state) {
+      state.loggedIn = true
     },
   },
   actions: {
@@ -53,6 +60,14 @@ export default createStore({
       try {
         const users = await apiClient.getUsers()
         commit('setUsers', users)
+      } catch (error) {
+        // Display error to profile
+      }
+    },
+    async connectUser ({ commit, dispatch }) {
+      try {
+        commit('connectUser')
+        await dispatch('fetchProfile')
       } catch (error) {
         // Display error to profile
       }

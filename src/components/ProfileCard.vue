@@ -13,12 +13,15 @@
       :img-src="profile.imgSrc"
       :link="profile.link || '#'"
     />
-    <DsfrButton
-      secondary
-      label="Déconnexion"
-      icon="ri-arrow-left-line"
-      @click="exit"
-    />
+    <div class="text-center">
+      <DsfrButton
+        secondary
+        class="fr-mt-2w"
+        label="Déconnexion"
+        icon="ri-logout-box-line"
+        @click="exit"
+      />
+    </div>
   </div>
 </template>
 <script>
@@ -52,3 +55,9 @@ export default defineComponent({
 })
 
 </script>
+
+<style>
+.text-center {
+  text-align: center;
+}
+</style>
