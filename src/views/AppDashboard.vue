@@ -94,20 +94,20 @@
     <teleport to=".fr-links-group > li:nth-child(0n+3)">
       <div
         v-show="showProfile"
-        ref="arrowUp"
+        ref="arrowProfileUp"
         class="arrow-up"
         :style="{
-          top: `calc(${arrowTop}px + 1rem)`,
-          left: arrowLeft + 'px',
+          top: `calc(${arrowProfileTop}px + 1rem)`,
+          left: arrowProfileLeft + 'px',
         }"
       />
       <div
         ref="profileContainer"
-        class="profile-card-container"
+        class="notifications-container"
         :class="{ hidden: !showProfile }"
         :style="{
-          top: notifTop + 'px',
-          left: notifLeft + 'px'
+          top: profileTop + 'px',
+          left: profileLeft + 'px'
         }"
       >
         <ProfileCard
@@ -246,6 +246,11 @@ export default defineComponent({
       arrowCenter: 0,
       arrowLeft: 0,
       arrowTop: 0,
+      profileLeft: 0,
+      profileTop: 0,
+      arrowProfileCenter: 0,
+      arrowProfileLeft: 0,
+      arrowProfileTop: 0,
       graphData,
       alertType,
       alertTitle,
@@ -291,7 +296,8 @@ export default defineComponent({
               class: dictUserClass[status],
             },
           ]
-        })
+        },
+      )
     },
   },
 
@@ -299,15 +305,31 @@ export default defineComponent({
     async showNotifications (newVal) {
       if (newVal) {
         await this.$nextTick()
-        this.placeNotifContainer()
+        this.placeNotifContainer(1)
+      }
+    },
+    async showProfile (newVal) {
+      if (newVal) {
+        await this.$nextTick()
+        this.placeProfileContainer(3)
       }
     },
   },
 
   mounted () {
-    window.addEventListener('resize', () => this.placeNotifContainer())
+    window.addEventListener('resize', () => this.placeNotifContainer(1))
+    window.addEventListener('resize', () => this.placeProfileContainer(3))
     this.fetchNotifications()
     this.fetchUsers()
+  },
+
+  beforeUnmount () {
+    if (this.showNotifications) {
+      this.$store.dispatch('toggleNotifications')
+    }
+    if (this.showProfile) {
+      this.$store.dispatch('toggleProfile')
+    }
   },
 
   methods: {
@@ -324,15 +346,30 @@ export default defineComponent({
     placeNotifContainer () {
       const header = document.querySelector('.fr-header')
       const headerHeight = header.offsetHeight
-      const notificationIcon = document.querySelector('.fr-links-group > li:first-child')
-      const notifOffsetWidth = this.$refs.notifContainer.offsetWidth
+      const notificationIcon = document.querySelector('.fr-links-group > li:nth-child(1)')
+      const notifOffsetWidth = this.$refs.notifContainer?.offsetWidth
       this.arrowCenter = notificationIcon.offsetLeft + (notificationIcon.offsetWidth / 2)
       this.arrowLeft = this.arrowCenter - (this.$refs.arrowUp.offsetWidth / 2)
       this.notifLeft = this.arrowCenter - (notifOffsetWidth / 2)
       this.notifTop = headerHeight
       this.arrowTop = this.notifTop - 10
+      // 2 = 10 parce que les marges horizontales sont de 10px
       if ((this.notifLeft + notifOffsetWidth + 2 * 10) > window.innerWidth) {
-        this.notifLeft = this.notifLeft - (window.innerWidth - (this.notifLeft + notifOffsetWidth)) - 16
+        this.notifLeft = this.notifLeft - ((this.notifLeft + notifOffsetWidth) - window.innerWidth) - 32
+      }
+    },
+    placeProfileContainer () {
+      const header = document.querySelector('.fr-header')
+      const headerHeight = header.offsetHeight
+      const profileIcon = document.querySelector('.fr-links-group > li:nth-child(2)')
+      const profileOffsetWidth = this.$refs.profileContainer?.offsetWidth
+      this.arrowProfileCenter = profileIcon.offsetLeft + (profileIcon.offsetWidth / 2)
+      this.arrowProfileLeft = this.arrowProfileCenter - (this.$refs.arrowProfileUp.offsetWidth / 2)
+      this.profileLeft = this.arrowProfileCenter - (profileOffsetWidth / 2)
+      this.profileTop = headerHeight
+      this.arrowProfileTop = this.profileTop - 10
+      if ((this.profileLeft + profileOffsetWidth + 2 * 10) > window.innerWidth) {
+        this.profileLeft = this.profileLeft - ((this.profileLeft + profileOffsetWidth) - window.innerWidth) - 32
       }
     },
     fetchNotifications () {

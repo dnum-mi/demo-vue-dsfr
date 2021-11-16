@@ -7,6 +7,7 @@ export default createStore({
     showProfile: false,
     notifications: [],
     users: [],
+    profile: {},
   },
   mutations: {
     toggleNotifications (state) {
@@ -14,6 +15,9 @@ export default createStore({
     },
     toggleProfile (state) {
       state.showProfile = !state.showProfile
+    },
+    setProfile (state, profile) {
+      state.profile = profile
     },
     setNotifications (state, notifications) {
       state.notifications = notifications
@@ -29,6 +33,14 @@ export default createStore({
     toggleProfile ({ commit }) {
       commit('toggleProfile')
     },
+    async fetchProfile ({ commit }) {
+      try {
+        const profiles = await apiClient.getProfile()
+        commit('setProfile', profiles[0])
+      } catch (error) {
+        // Display error to user
+      }
+    },
     async fetchNotifications ({ commit }) {
       try {
         const notifications = await apiClient.getNotifications()
@@ -42,7 +54,7 @@ export default createStore({
         const users = await apiClient.getUsers()
         commit('setUsers', users)
       } catch (error) {
-        // Display error to user
+        // Display error to profile
       }
     },
   },

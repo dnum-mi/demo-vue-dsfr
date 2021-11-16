@@ -3,6 +3,7 @@ const apiBaseUrl = '/api/v1'
 const apiRoutes = {
   notifications: '/notifications',
   users: '/users',
+  profiles: '/profiles',
 }
 
 export const xhrClient = {
@@ -18,5 +19,9 @@ export default {
 
   getUsers () {
     return xhrClient.getJson(apiBaseUrl + apiRoutes.users)
+  },
+
+  getProfile () {
+    return xhrClient.getJson(apiBaseUrl + apiRoutes.profiles)
   },
 }

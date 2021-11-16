@@ -1,17 +1,17 @@
 <template>
-  <div>
+  <div v-show="show">
     <h6>
       Mon profil
     </h6>
     <DsfrCard
-      noArrow
-      title="Damien Lebois"
+      no-arrow
+      :title="profile.fullname"
       horizontal
-      altImg=""
-      detail="SG / DNUM / SDSI / BRR / Pôle dev"
-      description="Responsable de projet"
-      imgSrc="https://placekitten.com/500/500"
-      link="https://www.systeme-de-design.gouv.fr/"
+      :alt-img="`Avatar de ${profile.fullname}`"
+      :detail="profile.service"
+      :description="profile.description"
+      :img-src="profile.imgSrc"
+      :link="profile.link || '#'"
     />
     <DsfrButton
       secondary
@@ -22,7 +22,7 @@
   </div>
 </template>
 <script>
-import {defineComponent} from "vue";
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'ProfileCard',
@@ -32,18 +32,23 @@ export default defineComponent({
   },
 
   computed: {
+    profile () {
+      return this.$store.state.profile
+    },
+  },
 
+  mounted () {
+    if (!this.profile.fullname) {
+      this.$store.dispatch('fetchProfile')
+    }
   },
 
   methods: {
     exit () {
-      alert("On quitte")
-    }
-  }
+      this.$store.dispatch('toggleProfile')
+      this.$router.push({ name: 'Login' })
+    },
+  },
 })
 
 </script>
-
-<style scoped>
-
-</style>
