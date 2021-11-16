@@ -154,26 +154,25 @@
             />
           </div>
         </div>
-        <div class="graph-select__group">
-          <label
-            for="graphSelect"
-          >Sélectionnez un mois</label>
-          <select
-            id="graphSelect"
-            name="month"
-            class="graph-select__input"
-          >
-            <option value="2021-12">
-              Décembre 2021
-            </option>
-            <option value="2021-11">
-              Novembre 2021
-            </option>
-            <option value="2021-10">
-              Octobre 2021
-            </option>
-          </select>
-        </div>
+
+        <DsfrSelect
+          id="graphSelect"
+          v-model="month"
+          name="month"
+          class="graph-select__input"
+          :options="options"
+          label="Sélectionner un mois"
+        >
+          <option value="2021-12">
+            Décembre 2021
+          </option>
+          <option value="2021-11">
+            Novembre 2021
+          </option>
+          <option value="2021-10">
+            Octobre 2021
+          </option>
+        </DsfrSelect>
       </div>
     </div>
   </div>
@@ -239,6 +238,20 @@ export default defineComponent({
     const openAlert = false
     const isModalOpen = false
     const graphData = randomIntArray
+
+    const options = [{
+      text: 'Décembre 2021',
+      value: '2021-12',
+    },
+    {
+
+      text: 'Novembre 2021',
+      value: '2021-11',
+    },
+    {
+      text: 'Octobre 2021',
+      value: '2021-10',
+    }]
     return {
       usersTotal: graphData.reduce((acc, cur) => (acc + cur), 0),
       notifLeft: 0,
@@ -256,6 +269,7 @@ export default defineComponent({
       alertTitle,
       alertDescription,
       openAlert,
+      options,
       isModalOpen,
       headers: ['Utilisateurs', 'Référence', 'Date', 'Statut'],
     }
@@ -361,7 +375,7 @@ export default defineComponent({
     placeProfileContainer () {
       const header = document.querySelector('.fr-header')
       const headerHeight = header.offsetHeight
-      const profileIcon = document.querySelector('.fr-links-group > li:nth-child(2)')
+      const profileIcon = document.querySelector('.fr-links-group > li:nth-child(3)')
       const profileOffsetWidth = this.$refs.profileContainer?.offsetWidth
       this.arrowProfileCenter = profileIcon.offsetLeft + (profileIcon.offsetWidth / 2)
       this.arrowProfileLeft = this.arrowProfileCenter - (this.$refs.arrowProfileUp.offsetWidth / 2)
@@ -386,6 +400,10 @@ export default defineComponent({
 .fr-container {
   position: relative;
   margin-bottom: 2rem;
+}
+
+:deep(.fr-label) {
+  color: var(--white);
 }
 
 .notifications-container {
@@ -523,9 +541,6 @@ export default defineComponent({
 
 .graph-select__input {
   width: 100%;
-  height: 2rem;
-  margin-top: 0.5rem;
-  background-color: white;
   border-radius: 5px;
 }
 
