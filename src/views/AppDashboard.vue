@@ -127,9 +127,7 @@
         <h2
           id="table-title"
           class="table-title"
-        >
-          Derniers utilisateurs
-        </h2>
+        />
       </div>
       <div
         class="list"
@@ -162,17 +160,8 @@
           class="graph-select__input"
           :options="options"
           label="Sélectionner un mois"
-        >
-          <option value="2021-12">
-            Décembre 2021
-          </option>
-          <option value="2021-11">
-            Novembre 2021
-          </option>
-          <option value="2021-10">
-            Octobre 2021
-          </option>
-        </DsfrSelect>
+          @change="changeGraphData(month)"
+        />
       </div>
     </div>
   </div>
@@ -239,6 +228,12 @@ export default defineComponent({
     const isModalOpen = false
     const graphData = randomIntArray
 
+    const dict = {
+      '2021-12': getRandomIntArray(3, 35, 13),
+      '2021-11': getRandomIntArray(3, 35, 13),
+      '2021-10': getRandomIntArray(3, 35, 13),
+    }
+
     const options = [{
       text: 'Décembre 2021',
       value: '2021-12',
@@ -252,6 +247,7 @@ export default defineComponent({
       text: 'Octobre 2021',
       value: '2021-10',
     }]
+
     return {
       usersTotal: graphData.reduce((acc, cur) => (acc + cur), 0),
       notifLeft: 0,
@@ -265,6 +261,7 @@ export default defineComponent({
       arrowProfileLeft: 0,
       arrowProfileTop: 0,
       graphData,
+      graphDict: dict,
       alertType,
       alertTitle,
       alertDescription,
@@ -272,6 +269,7 @@ export default defineComponent({
       options,
       isModalOpen,
       headers: ['Utilisateurs', 'Référence', 'Date', 'Statut'],
+      month: undefined,
     }
   },
 
@@ -347,6 +345,13 @@ export default defineComponent({
   },
 
   methods: {
+    async changeGraphData (month) {
+      this.graphData = await this.getDataForMonth(month)
+    },
+    getDataForMonth (month) {
+      // Dans la vraie vie, ce serait un fetch ou un dispatch(<action>)
+      return Promise.resolve(this.graphDict[month])
+    },
     openForm () {
       this.isModalOpen = true
     },
