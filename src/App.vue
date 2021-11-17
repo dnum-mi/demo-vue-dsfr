@@ -39,10 +39,14 @@ export default {
           iconOnly: true,
         },
         {
-          path: '/profil',
+          path: '#',
           label: 'profil',
           icon: 'ri-user-line',
           iconOnly: true,
+          onClick: ($event) => {
+            $event.preventDefault()
+            this.toggleProfile()
+          },
         },
       ],
     }
@@ -50,7 +54,12 @@ export default {
 
   methods: {
     toggleNotifications () {
+      if (this.$store.state.showProfile) this.$store.dispatch('toggleProfile')
       this.$store.dispatch('toggleNotifications')
+    },
+    toggleProfile () {
+      if (this.$store.state.showNotifications) this.$store.dispatch('toggleNotifications')
+      this.$store.dispatch('toggleProfile')
     },
   },
 }

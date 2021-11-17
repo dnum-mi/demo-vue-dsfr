@@ -31,7 +31,8 @@ export default defineComponent({
   },
 
   methods: {
-    goToHome () {
+    async goToHome () {
+      await this.$store.dispatch('connectUser')
       this.$router.push({ name: 'Home' })
     },
   },

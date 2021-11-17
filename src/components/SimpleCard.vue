@@ -51,6 +51,7 @@ export default defineComponent({
   color: var(--bf500);
   max-width: 8rem;
   display: inline-block;
+  margin-bottom: 0 !important;
 }
 
 .text,

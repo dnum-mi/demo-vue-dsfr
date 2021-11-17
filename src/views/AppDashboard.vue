@@ -91,6 +91,30 @@
         />
       </div>
     </teleport>
+    <teleport to=".fr-links-group > li:nth-child(0n+3)">
+      <div
+        v-show="showProfile"
+        ref="arrowProfileUp"
+        class="arrow-up"
+        :style="{
+          top: `calc(${arrowProfileTop}px + 1rem)`,
+          left: arrowProfileLeft + 'px',
+        }"
+      />
+      <div
+        ref="profileContainer"
+        class="notifications-container"
+        :class="{ hidden: !showProfile }"
+        :style="{
+          top: profileTop + 'px',
+          left: profileLeft + 'px'
+        }"
+      >
+        <ProfileCard
+          :show="showProfile"
+        />
+      </div>
+    </teleport>
     <div class="btn-container">
       <DsfrButton
         icon="ri-add-line"
@@ -103,9 +127,7 @@
         <h2
           id="table-title"
           class="table-title"
-        >
-          Derniers utilisateurs
-        </h2>
+        />
       </div>
       <div
         class="list"
@@ -130,26 +152,16 @@
             />
           </div>
         </div>
-        <div class="graph-select__group">
-          <label
-            for="graphSelect"
-          >Sélectionnez un mois</label>
-          <select
-            id="graphSelect"
-            name="month"
-            class="graph-select__input"
-          >
-            <option value="2021-12">
-              Décembre 2021
-            </option>
-            <option value="2021-11">
-              Novembre 2021
-            </option>
-            <option value="2021-10">
-              Octobre 2021
-            </option>
-          </select>
-        </div>
+
+        <DsfrSelect
+          id="graphSelect"
+          v-model="month"
+          name="month"
+          class="graph-select__input"
+          :options="options"
+          label="Sélectionner un mois"
+          @change="changeGraphData(month)"
+        />
       </div>
     </div>
   </div>
@@ -160,6 +172,7 @@ import { defineComponent } from 'vue'
 
 import BarGraph from '../components/BarGraph.vue'
 import Notifications from '../components/Notifications.vue'
+import ProfileCard from '../components/ProfileCard.vue'
 
 const getRandomInt = (min = 0, max = Number.MAX_SAFE_INTEGER) => Math.floor(min + Math.random() * (max + 1 - min))
 
@@ -204,6 +217,7 @@ export default defineComponent({
   components: {
     BarGraph,
     Notifications,
+    ProfileCard,
   },
 
   data () {
@@ -213,6 +227,27 @@ export default defineComponent({
     const openAlert = false
     const isModalOpen = false
     const graphData = randomIntArray
+
+    const dict = {
+      '2021-12': getRandomIntArray(3, 35, 13),
+      '2021-11': getRandomIntArray(3, 35, 13),
+      '2021-10': getRandomIntArray(3, 35, 13),
+    }
+
+    const options = [{
+      text: 'Décembre 2021',
+      value: '2021-12',
+    },
+    {
+
+      text: 'Novembre 2021',
+      value: '2021-11',
+    },
+    {
+      text: 'Octobre 2021',
+      value: '2021-10',
+    }]
+
     return {
       usersTotal: graphData.reduce((acc, cur) => (acc + cur), 0),
       notifLeft: 0,
@@ -220,19 +255,30 @@ export default defineComponent({
       arrowCenter: 0,
       arrowLeft: 0,
       arrowTop: 0,
+      profileLeft: 0,
+      profileTop: 0,
+      arrowProfileCenter: 0,
+      arrowProfileLeft: 0,
+      arrowProfileTop: 0,
       graphData,
+      graphDict: dict,
       alertType,
       alertTitle,
       alertDescription,
       openAlert,
+      options,
       isModalOpen,
       headers: ['Utilisateurs', 'Référence', 'Date', 'Statut'],
+      month: undefined,
     }
   },
 
   computed: {
     showNotifications () {
       return this.$store.state.showNotifications
+    },
+    showProfile () {
+      return this.$store.state.showProfile
     },
     notifications () {
       return this.$store.state.notifications.map(
@@ -262,7 +308,8 @@ export default defineComponent({
               class: dictUserClass[status],
             },
           ]
-        })
+        },
+      )
     },
   },
 
@@ -270,18 +317,41 @@ export default defineComponent({
     async showNotifications (newVal) {
       if (newVal) {
         await this.$nextTick()
-        this.placeNotifContainer()
+        this.placeNotifContainer(1)
+      }
+    },
+    async showProfile (newVal) {
+      if (newVal) {
+        await this.$nextTick()
+        this.placeProfileContainer(3)
       }
     },
   },
 
   mounted () {
-    window.addEventListener('resize', () => this.placeNotifContainer())
+    window.addEventListener('resize', () => this.placeNotifContainer(1))
+    window.addEventListener('resize', () => this.placeProfileContainer(3))
     this.fetchNotifications()
     this.fetchUsers()
   },
 
+  beforeUnmount () {
+    if (this.showNotifications) {
+      this.$store.dispatch('toggleNotifications')
+    }
+    if (this.showProfile) {
+      this.$store.dispatch('toggleProfile')
+    }
+  },
+
   methods: {
+    async changeGraphData (month) {
+      this.graphData = await this.getDataForMonth(month)
+    },
+    getDataForMonth (month) {
+      // Dans la vraie vie, ce serait un fetch ou un dispatch(<action>)
+      return Promise.resolve(this.graphDict[month])
+    },
     openForm () {
       this.isModalOpen = true
     },
@@ -295,15 +365,30 @@ export default defineComponent({
     placeNotifContainer () {
       const header = document.querySelector('.fr-header')
       const headerHeight = header.offsetHeight
-      const notificationIcon = document.querySelector('.fr-links-group > li:first-child')
-      const notifOffsetWidth = this.$refs.notifContainer.offsetWidth
+      const notificationIcon = document.querySelector('.fr-links-group > li:nth-child(1)')
+      const notifOffsetWidth = this.$refs.notifContainer?.offsetWidth
       this.arrowCenter = notificationIcon.offsetLeft + (notificationIcon.offsetWidth / 2)
       this.arrowLeft = this.arrowCenter - (this.$refs.arrowUp.offsetWidth / 2)
       this.notifLeft = this.arrowCenter - (notifOffsetWidth / 2)
       this.notifTop = headerHeight
       this.arrowTop = this.notifTop - 10
+      // 2 = 10 parce que les marges horizontales sont de 10px
       if ((this.notifLeft + notifOffsetWidth + 2 * 10) > window.innerWidth) {
-        this.notifLeft = this.notifLeft - (window.innerWidth - (this.notifLeft + notifOffsetWidth)) - 16
+        this.notifLeft = this.notifLeft - ((this.notifLeft + notifOffsetWidth) - window.innerWidth) - 32
+      }
+    },
+    placeProfileContainer () {
+      const header = document.querySelector('.fr-header')
+      const headerHeight = header.offsetHeight
+      const profileIcon = document.querySelector('.fr-links-group > li:nth-child(3)')
+      const profileOffsetWidth = this.$refs.profileContainer?.offsetWidth
+      this.arrowProfileCenter = profileIcon.offsetLeft + (profileIcon.offsetWidth / 2)
+      this.arrowProfileLeft = this.arrowProfileCenter - (this.$refs.arrowProfileUp.offsetWidth / 2)
+      this.profileLeft = this.arrowProfileCenter - (profileOffsetWidth / 2)
+      this.profileTop = headerHeight
+      this.arrowProfileTop = this.profileTop - 10
+      if ((this.profileLeft + profileOffsetWidth + 2 * 10) > window.innerWidth) {
+        this.profileLeft = this.profileLeft - ((this.profileLeft + profileOffsetWidth) - window.innerWidth) - 32
       }
     },
     fetchNotifications () {
@@ -320,6 +405,10 @@ export default defineComponent({
 .fr-container {
   position: relative;
   margin-bottom: 2rem;
+}
+
+:deep(.fr-label) {
+  color: var(--white);
 }
 
 .notifications-container {
@@ -457,9 +546,6 @@ export default defineComponent({
 
 .graph-select__input {
   width: 100%;
-  height: 2rem;
-  margin-top: 0.5rem;
-  background-color: white;
   border-radius: 5px;
 }
 

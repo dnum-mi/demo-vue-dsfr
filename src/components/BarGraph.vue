@@ -1,7 +1,10 @@
 <template>
   <div class="h-full">
     <div class="container-chart text-align-left">
-      <div class="chart" />
+      <div
+        ref="chart"
+        class="chart"
+      />
     </div>
   </div>
 </template>
@@ -20,13 +23,26 @@ export default {
     return {}
   },
 
+  watch: {
+    graphData (newVal) {
+      this.$refs.chart.innerHTML = ''
+      this.buildGraph(newVal)
+    },
+  },
+
   mounted () {
-    d3.select('.chart')
-      .selectAll('div')
-      .data(this.graphData)
-      .enter().append('div')
-      .style('height', function (nb) { return nb * 5 + 'px' })
-      .text(function (nb) { return nb })
+    this.buildGraph(this.graphData)
+  },
+
+  methods: {
+    buildGraph (data) {
+      d3.select('.chart')
+        .selectAll('div')
+        .data(data)
+        .enter().append('div')
+        .style('height', function (nb) { return nb * 5 + 'px' })
+        .text(function (nb) { return nb })
+    },
   },
 }
 </script>

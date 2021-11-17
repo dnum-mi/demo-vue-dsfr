@@ -59,6 +59,15 @@
       "date": "12/01/2022",
       "status": "pending"
     }
+  ],
+  "profiles": [
+    {
+      "fullname": "Damien Lebois",
+      "description": "Responsable de projet",
+      "imgSrc": "https://placekitten.com/1000/1000",
+      "service": "SG / DNUM / SDSI / BRR / Pôle dev",
+      "link": "https://www.systeme-de-design.gouv.fr/"
+    }
   ]
 }
 
