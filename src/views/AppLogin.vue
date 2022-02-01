@@ -1,42 +1,28 @@
-<script>
-import { defineComponent } from 'vue'
-
+<script setup>
 import SimpleCard from '../components/SimpleCard.vue'
 import franceConnect from '../assets/icon-franceconnect.png'
 import passage2 from '../assets/icon-passage2.png'
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
-export default defineComponent({
-  name: 'AppLogin',
+const store = useStore()
+const router = useRouter()
 
-  components: {
-    SimpleCard,
+defineProps({
+  applicationName: {
+    type: String,
+    default: '[application]',
   },
-
-  props: {
-    applicationName: {
-      type: String,
-      default: '[application]',
-    },
-    logoText: {
-      type: [String, Array],
-      default: () => ['Ministère', 'de l’intérieur'],
-    },
-  },
-
-  data () {
-    return {
-      franceConnect,
-      passage2,
-    }
-  },
-
-  methods: {
-    async goToHome () {
-      await this.$store.dispatch('connectUser')
-      this.$router.push({ name: 'Home' })
-    },
+  logoText: {
+    type: [String, Array],
+    default: () => ['Ministère', 'de l’intérieur'],
   },
 })
+
+async function goToHome () {
+  await store.dispatch('connectUser')
+  router.push({ name: 'Home' })
+}
 </script>
 
 <template>

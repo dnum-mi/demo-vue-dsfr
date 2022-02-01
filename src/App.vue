@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { checkHealth } from './api/api-utils.js'
+
 export default {
   name: 'App',
 
@@ -50,6 +52,10 @@ export default {
         },
       ],
     }
+  },
+
+  mounted () {
+    checkHealth()
   },
 
   methods: {

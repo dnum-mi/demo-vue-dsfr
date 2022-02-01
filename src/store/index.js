@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import apiClient from '../api/index.js'
+import { getNotifications, getProfile, getUsers } from '../api/index.js'
 
 export default createStore({
   state: {
@@ -42,7 +42,7 @@ export default createStore({
     },
     async fetchProfile ({ commit }) {
       try {
-        const profiles = await apiClient.getProfile()
+        const profiles = await getProfile()
         commit('setProfile', profiles[0])
       } catch (error) {
         // Display error to user
@@ -50,7 +50,7 @@ export default createStore({
     },
     async fetchNotifications ({ commit }) {
       try {
-        const notifications = await apiClient.getNotifications()
+        const notifications = await getNotifications()
         commit('setNotifications', notifications)
       } catch (error) {
         // Display error to user
@@ -58,7 +58,7 @@ export default createStore({
     },
     async fetchUsers ({ commit }) {
       try {
-        const users = await apiClient.getUsers()
+        const users = await getUsers()
         commit('setUsers', users)
       } catch (error) {
         // Display error to profile

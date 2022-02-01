@@ -4,24 +4,27 @@ const apiRoutes = {
   notifications: '/notifications',
   users: '/users',
   profiles: '/profiles',
+  healthCheck: '/healthCheck',
 }
 
-export const xhrClient = {
+export const fetchClient = {
   getJson (url, options) {
     return fetch(url, options).then(res => res.json())
   },
 }
 
-export default {
-  getNotifications () {
-    return xhrClient.getJson(apiBaseUrl + apiRoutes.notifications)
-  },
+export function getNotifications () {
+  return fetchClient.getJson(apiBaseUrl + apiRoutes.notifications)
+}
 
-  getUsers () {
-    return xhrClient.getJson(apiBaseUrl + apiRoutes.users)
-  },
+export function getUsers () {
+  return fetchClient.getJson(apiBaseUrl + apiRoutes.users)
+}
 
-  getProfile () {
-    return xhrClient.getJson(apiBaseUrl + apiRoutes.profiles)
-  },
+export function getProfile () {
+  return fetchClient.getJson(apiBaseUrl + apiRoutes.profiles)
+}
+
+export function getHealthCheck () {
+  return fetchClient.getJson(apiBaseUrl + apiRoutes.healthCheck)
 }

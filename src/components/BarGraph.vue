@@ -8,47 +8,41 @@
     </div>
   </div>
 </template>
-<script>
+
+<script setup>
+import { onMounted, ref, watch } from 'vue'
 import * as d3 from 'd3'
-export default {
-  name: 'BarGraph',
-  props: {
-    graphData: {
-      type: Array,
-      default: () => [],
-    },
-  },
 
-  data () {
-    return {}
+const props = defineProps({
+  graphData: {
+    type: Array,
+    default: () => [],
   },
+})
 
-  watch: {
-    graphData (newVal) {
-      this.$refs.chart.innerHTML = ''
-      this.buildGraph(newVal)
-    },
-  },
+// Fonctionnalité Graph
+const chart = ref(null)
 
-  mounted () {
-    this.buildGraph(this.graphData)
-  },
-
-  methods: {
-    buildGraph (data) {
-      d3.select('.chart')
-        .selectAll('div')
-        .data(data)
-        .enter().append('div')
-        .style('height', function (nb) { return nb * 5 + 'px' })
-        .text(function (nb) { return nb })
-    },
-  },
+function buildGraph (data) {
+  d3.select('.chart')
+    .selectAll('div')
+    .data(data)
+    .enter().append('div')
+    .style('height', function (nb) { return nb * 5 + 'px' })
+    .text(function (nb) { return nb })
 }
-</script>
 
-<style scoped>
-</style>
+onMounted(() => {
+  buildGraph(props.graphData)
+})
+
+watch(() => props.graphData, (newVal) => {
+  if (chart.value) {
+    chart.value.innerHTML = ''
+  }
+  buildGraph(newVal)
+})
+</script>
 
 <style>
 .chart {
@@ -58,11 +52,11 @@ export default {
 }
 .chart div {
   font: 10px sans-serif;
-  background-color: var(--w);
+  background-color: #fff;
   text-align: center;
   padding: 3px;
   margin: 1px;
-  color: var(--bf500);
+  color: rgba(0, 17, 139, 0.7);
   width: 20px;
 }
 
@@ -70,7 +64,7 @@ export default {
   max-width: 300px;
   height: 100%;
   margin: auto;
-  border: 1px solid var(--w);
+  border: 1px solid #fff;
   padding: 0.5rem;
 }
 </style>

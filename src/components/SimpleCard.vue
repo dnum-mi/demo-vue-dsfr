@@ -1,22 +1,16 @@
-<script>
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  name: 'SimpleCard',
-
-  props: {
-    target: {
-      type: String,
-      default: '',
-    },
-    logo: {
-      type: String,
-      default: '',
-    },
-    text: {
-      type: String,
-      default: '',
-    },
+<script setup>
+defineProps({
+  target: {
+    type: String,
+    default: '',
+  },
+  logo: {
+    type: String,
+    default: '',
+  },
+  text: {
+    type: String,
+    default: '',
   },
 })
 </script>

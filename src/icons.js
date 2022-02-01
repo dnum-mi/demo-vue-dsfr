@@ -6,8 +6,10 @@ import {
   RiFileList2Line,
   RiLogoutBoxLine,
   RiMenuLine,
+  RiMoonFill,
   RiNotification3Line,
   RiQuestionLine,
+  RiSunLine,
   RiUserLine,
 } from 'oh-vue-icons/icons/ri/index.js'
 
@@ -17,7 +19,9 @@ VIcon.add(
   RiFileList2Line,
   RiLogoutBoxLine,
   RiMenuLine,
+  RiMoonFill,
   RiNotification3Line,
   RiQuestionLine,
+  RiSunLine,
   RiUserLine,
 )

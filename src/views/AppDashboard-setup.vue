@@ -378,7 +378,7 @@ onMounted(() => {
         @click="openForm()"
       />
     </div>
-    <div class="flex  flex-gap-1  flex-wrap">
+    <div class="flex  flex-wrap">
       <div class="flex-w-full">
         <h2
           id="table-title"
@@ -401,7 +401,7 @@ onMounted(() => {
           <h3 class="graph-title">
             Utilisateurs décembre 2021
           </h3>
-          <span class="fr-display-lg custom-title">{{ usersTotal }}</span>
+          <span class="fr-display-lg">{{ usersTotal }}</span>
           <div class="graph-display">
             <BarGraph
               :graph-data="graphData"
@@ -430,7 +430,7 @@ onMounted(() => {
 }
 
 :deep(.fr-label) {
-  color: #fff;
+  color: var(--white);
 }
 
 .notifications-container {
@@ -478,14 +478,6 @@ onMounted(() => {
   width: 100%;
 }
 
-.flex {
-  display: flex;
-}
-
-.flex-gap-1 {
-  gap: 1rem;
-}
-
 .flex-wrap {
   flex-wrap: wrap;
 }
@@ -521,7 +513,7 @@ onMounted(() => {
   flex-basis: 60%;
   flex-grow: 1;
   flex-shrink: 0;
-  background-color: var(--background-alt-grey);
+  background-color: #f7f7fb;
   box-shadow: 0 3px 20px 0 rgba(0, 0, 109, 0.1);
 }
 
@@ -556,10 +548,6 @@ onMounted(() => {
 
 .fr-display-lg {
   font-size: 4rem;
-}
-
-.custom-title {
-  color: white;
 }
 
 .graph-title {

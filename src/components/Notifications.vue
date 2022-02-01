@@ -1,5 +1,5 @@
-<script>
-import { defineComponent } from 'vue'
+<script setup>
+import { computed, ref } from 'vue'
 
 import { DsfrTabContent, getRandomId } from '@laruiss/vue-dsfr'
 import Notification from './Notification.vue'
@@ -11,72 +11,53 @@ const statuses = [
   'Refusé',
 ]
 
-export default defineComponent({
-  name: 'Notifications',
-
-  components: {
-    DsfrTabContent,
-    Notification,
+const props = defineProps({
+  notifications: {
+    type: Array,
+    default: () => [],
   },
-
-  props: {
-    notifications: {
-      type: Array,
-      default: () => [],
-    },
-    show: Boolean,
-  },
-
-  data () {
-    return {
-      tabTitles: [
-        {
-          title: 'Tous',
-          tabId: getRandomId('tab'),
-          panelId: getRandomId('tab', 'panel'),
-        },
-        {
-          title: 'Validé',
-          tabId: getRandomId('tab'),
-          panelId: getRandomId('tab', 'panel'),
-        },
-        {
-          title: 'En cours',
-          tabId: getRandomId('tab'),
-          panelId: getRandomId('tab', 'panel'),
-        },
-        {
-          title: 'Refusé',
-          tabId: getRandomId('tab'),
-          panelId: getRandomId('tab', 'panel'),
-        },
-      ],
-      selectedTabIndex: 0,
-      asc: true,
-    }
-  },
-
-  computed: {
-    selectedStatus () {
-      return statuses[this.selectedTabIndex]
-    },
-    notifsArray () {
-      return [
-        this.notifications,
-        this.notifications.filter(notif => notif.status === 'Validé'),
-        this.notifications.filter(notif => notif.status === 'En cours'),
-        this.notifications.filter(notif => notif.status === 'Refusé'),
-      ]
-    },
-  },
-
-  methods: {
-    selectTab (idx) {
-      this.asc = this.selectedTabIndex < idx
-      this.selectedTabIndex = idx
-    },
-  },
+  show: Boolean,
 })
+
+const selectedTabIndex = ref(0)
+// const selectedStatus = computed(() => statuses[selectedTabIndex.value])
+
+const notifsArray = computed(() => [
+  props.notifications,
+  props.notifications.filter(notif => notif.status === 'Validé'),
+  props.notifications.filter(notif => notif.status === 'En cours'),
+  props.notifications.filter(notif => notif.status === 'Refusé'),
+])
+
+const asc = ref(true)
+
+const selectTab = (idx) => {
+  asc.value = selectedTabIndex.value < idx
+  selectedTabIndex.value = idx
+}
+
+const tabTitles = [
+  {
+    title: 'Tous',
+    tabId: getRandomId('tab'),
+    panelId: getRandomId('tab', 'panel'),
+  },
+  {
+    title: 'Validé',
+    tabId: getRandomId('tab'),
+    panelId: getRandomId('tab', 'panel'),
+  },
+  {
+    title: 'En cours',
+    tabId: getRandomId('tab'),
+    panelId: getRandomId('tab', 'panel'),
+  },
+  {
+    title: 'Refusé',
+    tabId: getRandomId('tab'),
+    panelId: getRandomId('tab', 'panel'),
+  },
+]
 </script>
 
 <template>

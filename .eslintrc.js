@@ -1,5 +1,11 @@
 module.exports = {
   root: true,
+  globals: {
+    defineEmits: 'readonly',
+    defineProps: 'readonly',
+    defineExpose: 'readonly',
+    withDefaults: 'readonly',
+  },
   env: {
     browser: true,
   },
