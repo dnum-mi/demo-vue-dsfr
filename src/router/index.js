@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import UsersList from '../views/UsersList.vue'
 import Legal from '../views/Legal.vue'
 import Login from '../views/AppLogin.vue'
 import AppDashboard from '../views/AppDashboard.vue'
@@ -21,6 +22,11 @@ const routes = [
     path: '/connexion',
     name: 'Login',
     component: Login,
+  },
+  {
+    path: '/users',
+    name: 'UsersList',
+    component: UsersList,
   },
 ]
 

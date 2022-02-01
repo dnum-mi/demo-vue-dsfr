@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onMounted, watch, onBeforeUnmount, nextTick } from 'vue'
 
-import { useTheme } from '../composables/use-theme.js'
+import { useScheme } from '@laruiss/vue-dsfr'
 import BarGraph from '../components/BarGraph.vue'
 import Notifications from '../components/Notifications.vue'
 import ProfileCard from '../components/ProfileCard.vue'
@@ -242,9 +242,9 @@ const toggleTheme = () => {
 }
 
 onMounted(() => {
-  const { theme } = useTheme()
+  const { theme, setScheme } = useScheme()
   darkTheme.value = theme.value === 'dark'
-  watch(darkTheme, (val) => { theme.value = darkTheme.value ? 'dark' : 'light' })
+  watch(darkTheme, (val) => { setScheme(darkTheme.value ? 'dark' : 'light') })
 })
 </script>
 

@@ -11,6 +11,7 @@ import {
   RiQuestionLine,
   RiSunLine,
   RiUserLine,
+  RiUserSearchFill,
 } from 'oh-vue-icons/icons/ri/index.js'
 
 VIcon.add(
@@ -24,4 +25,5 @@ VIcon.add(
   RiQuestionLine,
   RiSunLine,
   RiUserLine,
+  RiUserSearchFill,
 )

@@ -41,6 +41,11 @@ export default {
           iconOnly: true,
         },
         {
+          label: 'Liste d’utilisateurs',
+          path: { name: 'UsersList' },
+          icon: 'ri-user-search-fill',
+        },
+        {
           path: '#',
           label: 'profil',
           icon: 'ri-user-line',
